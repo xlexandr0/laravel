@@ -15,7 +15,10 @@ RUN a2enmod rewrite
 # Copia los archivos de Laravel al contenedor
 COPY . /var/www/html
 
-# Establece permisos
+# Cambia el DocumentRoot de Apache a la carpeta 'public'
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+
+# Establece permisos adecuados
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
@@ -24,3 +27,4 @@ EXPOSE 80
 
 # Comando para iniciar el servidor
 CMD ["apache2-foreground"]
+
